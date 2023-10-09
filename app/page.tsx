@@ -7,7 +7,7 @@ import BlogCard from "./components/BlogCard";
 import Link from "next/link";
 
 const getArticles = async () => {
-  const res = await fetch("http://localhost:3000/api/blog", {
+  const res = await fetch(`${process.env.BASE_URL}/api/blog`, {
     next: {
       revalidate: 1,
     },

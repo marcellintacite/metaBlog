@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { verifierChamps } from "../utils/fieldVerfication";
 import { PrismaClient } from "@prisma/client";
 import { enreigistrerPost } from "../utils/save";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type Props = {};
 
@@ -22,6 +22,8 @@ export default function AjouterForm({}: Props) {
   const [disabled, setDisabled] = React.useState(false);
   const { data } = useSession();
 
+  const baseUrl = window.location.origin + "/api/blog";
+
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -29,7 +31,7 @@ export default function AjouterForm({}: Props) {
 
     if (resultat) {
       // making a post request using post
-      fetch("http://localhost:3000/api/blog", {
+      fetch(baseUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,10 +45,16 @@ export default function AjouterForm({}: Props) {
         }),
       })
         .then((res) => {
-          toast.success("Article publié avec succès");
-
-          router.refresh();
-          router.push("/");
+          if (res.status === 201) {
+            toast.success("Article publié avec succès");
+            router.refresh();
+            router.push("/");
+          } else {
+            toast.error(
+              "Une erreur s'est produite lors de la publication de l'article"
+            );
+          }
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);

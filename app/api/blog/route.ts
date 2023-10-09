@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 export async function POST(request: any) {
   const article = await request.json();
 
+  console.log(request);
+
   const { titre, categorie, contenu, image, useremail } = article;
 
   const prisma = new PrismaClient();

@@ -6,7 +6,7 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast } from "sonner";
 
 const removeArticle = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/blog/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/blog/${id}`, {
     method: "DELETE",
   });
   if (res.status === 200) {

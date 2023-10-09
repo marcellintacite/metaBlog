@@ -14,7 +14,7 @@ type Props = {
 };
 
 const getArticle = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/blog/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/blog/${id}`, {
     next: {
       revalidate: 1,
     },

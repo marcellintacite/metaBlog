@@ -12,9 +12,9 @@ export function verifierChamps(
     titre.length > 0 &&
     categorie.length > 0
   ) {
-    if (content.length < 5) {
+    if (content.length < 3) {
       console.log(content.length);
-      toast.error("Le contenu doit faire au moins 5 caractères");
+      toast.error("Le contenu doit faire au moins 4 caractères");
       return false;
     } else if (titre.length < 10) {
       toast.error("Le titre doit faire au moins 10 caractères");
