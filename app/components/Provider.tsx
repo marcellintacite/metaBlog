@@ -8,5 +8,5 @@ type Props = {
 };
 
 export default function Provider({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <SessionProvider basePath="/api/auth">{children}</SessionProvider>;
 }
