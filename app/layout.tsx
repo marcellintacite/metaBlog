@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import Provider from "./components/Provider";
 import Header from "./components/Header";
+import { Toaster } from "sonner";
 
 const work_san = Work_Sans({ subsets: ["latin"] });
 
@@ -18,10 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`mx-4 md:mx-60  ${work_san.className}`}>
+      <body className={`mx-4 lg:mx-60  ${work_san.className}`}>
         <Provider>
           <Header />
+
           {children}
+          <Toaster />
         </Provider>
       </body>
     </html>

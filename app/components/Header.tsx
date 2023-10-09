@@ -2,21 +2,49 @@ import Image from "next/image";
 import React from "react";
 import logo from "@/public/img/logo.png";
 import Link from "next/link";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaPlus } from "react-icons/fa";
 import BoutonConnexion from "./BoutonConnexion";
+import { getServerSession } from "next-auth";
+import { PrismaClient } from "@prisma/client";
 
 type Props = {};
 
-export default function Header({}: Props) {
+export default async function Header({}: Props) {
+  const session = await getServerSession();
+  const prisma = new PrismaClient();
+  if (session) {
+    const res = await prisma.user.findUnique({
+      where: { email: session.user?.email || "" },
+    });
+
+    if (res === null) {
+      const user = await prisma.user
+        .create({
+          data: {
+            email: session.user?.email || "",
+            name: session.user?.name || "",
+            imgLink: session.user?.image || "",
+          },
+        })
+        .then((res) => prisma.$disconnect());
+    } else {
+      prisma.$disconnect();
+    }
+  }
   return (
-    <header className="flex justify-between h-24 items-center">
+    <header
+      className="flex justify-between h-20 items-center
+    
+    sticky top-0 z-50 bg-white shadow-sm px-4 md:px-11
+    "
+    >
       <div>
-        <p className="text-2xl">
+        <Link className="text-2xl" href={"/"}>
           Meta<span className="font-bold">Blog</span>
-        </p>
+        </Link>
       </div>
 
-      <nav className="hidden md:block">
+      <nav className="hidden md:hidden lg:block">
         <ul className="flex gap-7">
           <li className="">
             <Link href={"/"}>Accueil</Link>
@@ -43,7 +71,16 @@ export default function Header({}: Props) {
           <FaSearch className="text-gray-500 hover:text-gray-700 cursor-pointer" />
         </button>
       </form>
-      <div>
+      <div
+        className="
+      flex gap-6 items-center
+      "
+      >
+        {session ? (
+          <Link href={"/blog/create"}>
+            <FaPlus className="text-2xl text-gray-900 hover:text-gray-700 cursor-pointer" />
+          </Link>
+        ) : null}
         <BoutonConnexion />
       </div>
     </header>
