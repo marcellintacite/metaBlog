@@ -6,6 +6,9 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 import BoutonConnexion from "./BoutonConnexion";
 import { getServerSession } from "next-auth";
 import { PrismaClient } from "@prisma/client";
+import { toast } from "sonner";
+import { notFound } from "next/navigation";
+import DarkMode from "./DarkMode";
 
 type Props = {};
 
@@ -13,9 +16,13 @@ export default async function Header({}: Props) {
   const session = await getServerSession();
   const prisma = new PrismaClient();
   if (session) {
-    const res = await prisma.user.findUnique({
-      where: { email: session.user?.email || "" },
-    });
+    const res = await prisma.user
+      .findUnique({
+        where: { email: session.user?.email || "" },
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
     if (res === null) {
       const user = await prisma.user
@@ -33,15 +40,16 @@ export default async function Header({}: Props) {
   }
   return (
     <header
-      className="flex justify-between h-20 items-center
+      className="flex justify-between h-20 items-center dark:bg-dark dark:text-white
     
     sticky top-0 z-50 bg-white shadow-sm px-4 md:px-11
     "
     >
-      <div>
+      <div className="flex gap-5 items-center">
         <Link className="text-2xl" href={"/"}>
           Meta<span className="font-bold">Blog</span>
         </Link>
+        <DarkMode />
       </div>
 
       <nav className="hidden md:hidden lg:block">
@@ -78,7 +86,7 @@ export default async function Header({}: Props) {
       >
         {session ? (
           <Link href={"/blog/create"}>
-            <FaPlus className="text-2xl text-gray-900 hover:text-gray-700 cursor-pointer" />
+            <FaPlus className="text-2xl text-gray-900 dark:text-white hover:text-gray-700 cursor-pointer" />
           </Link>
         ) : null}
         <BoutonConnexion />

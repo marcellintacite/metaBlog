@@ -6,13 +6,17 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast } from "sonner";
 
 const removeArticle = async (id: string) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/blog/${id}`, {
-    method: "DELETE",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
   if (res.status === 200) {
     toast.success("Article supprimé avec succès");
     return true;
   } else {
+    console.log(res);
     toast.error(
       "Une erreur s'est produite lors de la suppression de l'article"
     );
@@ -30,11 +34,11 @@ export default function ActionBlog({ id }: { id: string }) {
     }
   };
   return (
-    <>
+    <div className="flex items-center gap-5">
       <Link
         href={`/blog/${id}/edit`}
         className="
-flex items-center gap-2 text-blue-400 hover:underline
+flex items-center gap-2 text-blue-400 hover:underline 
 "
       >
         <AiOutlineEdit />
@@ -47,6 +51,6 @@ flex items-center gap-2 text-blue-400 hover:underline
         <AiOutlineDelete />
         <p>Effacer</p>
       </button>
-    </>
+    </div>
   );
 }

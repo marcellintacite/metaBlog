@@ -4,6 +4,7 @@ import { Work_Sans } from "next/font/google";
 import Provider from "./components/Provider";
 import Header from "./components/Header";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 const work_san = Work_Sans({ subsets: ["latin"] });
 
@@ -19,12 +20,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`mx-4 lg:mx-60  ${work_san.className}`}>
+      <head>
+        <Script id="theme-switcher" strategy="beforeInteractive">
+          {`if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }`}
+        </Script>
+      </head>
+      <body className={`mx-4 lg:mx-60  ${work_san.className} dark:bg-dark`}>
         <Provider>
           <Header />
 
           {children}
           <Toaster />
+          <footer className="mt-10">
+            <p className="text-center text-gray-600 dark:text-white p-5">
+              © {new Date().getFullYear()} drcmind blog
+            </p>
+          </footer>
         </Provider>
       </body>
     </html>

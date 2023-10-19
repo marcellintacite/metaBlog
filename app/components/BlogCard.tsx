@@ -10,10 +10,15 @@ type Props = {
 
 export default async function BlogCard({ data }: Props) {
   const prisma = new PrismaClient();
-  const user = await prisma.user.findUnique({ where: { id: data.authorId } });
 
+  const user = await prisma.user
+    .findUnique({ where: { id: data.authorId } })
+    .catch((e) => {
+      console.log(e);
+    });
+  prisma.$disconnect();
   return (
-    <div className=" w-full flex flex-col gap-3 p-3 border border-gray-300 rounded-md">
+    <div className=" w-full flex flex-col gap-3 p-3 borderbg-dark-800 border dark:border-[#242535] border-gray-300 rounded-xl">
       <Image
         src={data.imgLink}
         alt="Blog illustration"
@@ -24,12 +29,14 @@ export default async function BlogCard({ data }: Props) {
         height={200}
       />
       <div className="flex flex-col gap-4">
-        <p className="badge">{data.catergory}</p>
+        <p className="badge dark:text-blue-500 dark:bg-transparent">
+          {data.category}
+        </p>
 
         <Link
           href={`/blog/${data.id}`}
           className="text-2xl font-semibold text-slate-900 hover:underline transition-all
-            hover:text-slate-800
+            hover:text-slate-800 dark:text-white dark:hover:text-slate-200 dark:hover:underline
           "
         >
           {data.title}

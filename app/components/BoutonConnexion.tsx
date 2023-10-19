@@ -13,7 +13,7 @@ export default function BoutonConnexion({}: Props) {
 
   if (session && session.user) {
     return (
-      <div className="block relative">
+      <div className="block relative dark:bg-dark">
         {session.user.image && (
           <Image
             src={session.user.image}
@@ -27,7 +27,7 @@ export default function BoutonConnexion({}: Props) {
         <div
           className={`${
             show ? "flex" : "hidden"
-          } flex-col  justify-start min-w-[200px] shadow-md absolute top-12 right-0 bg-white rounded-md p-2 gap-2 `}
+          } flex-col  justify-start min-w-[200px] dark:bg-dark-500 shadow-md absolute top-12 right-0 bg-white rounded-md p-2 gap-2 `}
           onMouseLeave={() => setShow(false)}
         >
           <Link

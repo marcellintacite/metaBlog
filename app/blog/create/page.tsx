@@ -5,10 +5,10 @@ type Props = {};
 
 export default function page({}: Props) {
   return (
-    <main>
+    <main className="dark:text-white">
       <h1
         className="
-        text-2xl font-semibold text-slate-900 mt-5
+        text-2xl font-semibold text-slate-900 mt-5 dark:text-white
       "
       >
         Créer un article
