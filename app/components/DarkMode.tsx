@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { BsSunFill, BsMoonStars } from "react-icons/Bs";
+import { FaRegMoon, FaSun } from "react-icons/fa";
 
 type Props = {};
 
@@ -28,9 +28,9 @@ export default function DarkMode({}: Props) {
   return (
     <>
       {darkMode ? (
-        <BsMoonStars onClick={handleDarkMode} className="pointer" size={20} />
+        <FaRegMoon onClick={handleDarkMode} className="pointer" size={20} />
       ) : (
-        <BsSunFill onClick={handleDarkMode} className="pointer" size={20} />
+        <FaSun onClick={handleDarkMode} className="pointer" size={20} />
       )}
     </>
   );
