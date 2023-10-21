@@ -8,11 +8,38 @@ import Link from "next/link";
 import ActionBlog from "@/app/components/ActionBlog";
 import { notFound } from "next/navigation";
 import parse from "html-react-parser";
+import { Metadata, ResolvingMetadata } from "next";
+import Commentaires from "@/app/components/posts/Commentaires";
 type Props = {
   params: {
     id: string;
   };
 };
+
+// Generation des metadata
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
+
+  // Recherche de l'article
+  const { article } = await fetch(
+    `${process.env.BASE_URL}/api/blog/${id}`
+  ).then((res) => res.json());
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: article.title,
+    openGraph: {
+      images: [article.imgLink, ...previousImages],
+    },
+  };
+}
 
 const getArticle = async (id: string) => {
   const res = await fetch(`${process.env.BASE_URL}/api/blog/${id}`, {
@@ -78,6 +105,19 @@ export default async function page({ params }: Props) {
           className="rounded-md w-full md:w-2/3 m-auto"
         />
         <div className="mt-4">{parse(article.content)}</div>
+        {session ? (
+          <Commentaires id={params.id} />
+        ) : (
+          <div
+            className="
+          w-full border-t-2 border-gray-200 dark:border-gray-700 mt-8
+          "
+          >
+            <p className="text-center mt-4 font-bold">
+              Vous devez être connecté pour commenter
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );
