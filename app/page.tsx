@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const getArticles = async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/blog`, {
     next: {
-      revalidate: 1,
+      revalidate: 3000,
     },
   });
   const articles = await res.json();
